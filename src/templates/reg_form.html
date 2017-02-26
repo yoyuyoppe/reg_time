@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]> <html class="lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]> <html class="lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html lang="en">
+<!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Регистрация</title>
+    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="icon" href="http://vladmaxi.net/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="http://vladmaxi.net/favicon.ico" type="image/x-icon">
+    <!--[if lt IE 9]><script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+
+    <form method="post" action="/registration" class="login">
+
+        <h1 style="text-decoration: underline">{{ login_info }}</h1>
+        <br>
+        <p>
+            <label>Фамилия:</label>
+            <input type="text" id="login_part1" name="login_part1" required>
+        </p>
+
+        <p>
+            <label>Имя:</label>
+            <input type="text" id="login_part2" name="login_part2" required>
+        </p>
+
+        <p>
+            <label>Отчество:</label>
+            <input type="text" id="login_part3" name="login_part3" required>
+        </p>
+
+        <p>
+            <label>E-mail:</label>
+            <input type="text" id="e_mail" name="e_mail" required>
+        </p>
+
+        <p>
+            <label>Телефон:</label>
+            <input type="text" id="phone" name="phone">
+        </p>
+        <br>
+        <p>
+            <button type="submit">Зарегистрироваться</button>
+        </p>    
+
+
+    </form>
+
+</body>    

@@ -77,13 +77,25 @@ a:hover {
   margin: 0 0 10px;
 }
 
-input, button, label {
+input, label {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 15px;
   font-weight: 300;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+}
+
+button {
+   background: -moz-linear-gradient(#D0ECF4, #5BC9E1, #D0ECF4);
+   background: -webkit-gradient(linear, 0 0, 0  100%, from(#D0ECF4), to(#D0ECF4), color-stop(0.5, #5BC9E1));
+   /*filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00BBD6', endColorstr='#EBFFFF');*/
+   padding: 3px 7px;
+   color: #404040;
+   -moz-border-radius: 5px;
+   -webkit-border-radius: 5px;
+   border-radius: 5px;
+   border: 1px solid #666;
 }
 
 input[type=text], input[type=password] {
@@ -229,7 +241,7 @@ label {
   background: #313131;
 }
 
-/* Стили бара vladmaxi, можно удалить */
+/* пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ vladmaxi, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ */
 .vladmaxi-top{
 	line-height: 24px;
 	font-size: 11px;
