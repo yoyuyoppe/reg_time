@@ -1,10 +1,9 @@
-from flask import Flask, render_template, request, make_response
+from flask import Flask, render_template, request, make_response, redirect, url_for
 from database import DB
 from datetime import datetime
 
 app = Flask(__name__)
 local_db = DB()
-
 
 
 def valid_login(login, passw):
@@ -39,7 +38,7 @@ def index():
 
 @app.route('/login', methods=['POST'])
 def login():
-    """Авторизация или регистрация пользователя, сохранение cookie|"""
+    """Авторизация или регистрация пользователя, сохранение cookie"""
     info = None
     _username = request.form['login']
     _passw = request.form['password']
@@ -51,17 +50,21 @@ def login():
         info = "Пользователь " + str(_username) + ' не зарегистрирован!'
         return render_template('reg_form.html', login_info=info)
 
-    resp = make_response(render_template('index.html', username=_username, passw=_passw, login_info=info))    
+    resp = make_response(render_template('index.html', username=_username, login_info=info))    
     resp.set_cookie('username', _username)
 
     return resp
 
-@app.route('/registration')
+
+@app.route('/registration', methods=['POST'])
 def reg_user():
     """Регистрирует нового пользователя в системе"""
     sql = 'INSERT INTO Users VALUES (?, ?, ?, ?, ?)'
     param = [get_nextId(), get_fullName(), request.form['password'], request.form['e_mail'], request.form['phone']]
     local_db.__execute__(sql, param)
+    local_db.connector.commit()
+
+    return redirect(url_for('index'))
 
 if __name__ == '__main__':
     app.run()
