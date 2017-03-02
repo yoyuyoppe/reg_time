@@ -29,7 +29,10 @@
       <button type="submit" class="login-button">Войти</button>
     </p>
 
-    <p class="forgot-password"><a href="index.html">Забыли пароль?</a></p>
+    <p class="forgot-password">
+      <a href="{{ url_for('send_mail', type = 'SEND_PASSWORD') }}">Забыли пароль?</a>
+      <a style=margin-left:20% href="{{ url_for('reg_form') }}">Регистрация</a>
+    </p>
 
     <p>{% if login_info %} {{ login_info }} {% endif %}</p>
 
