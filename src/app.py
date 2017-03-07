@@ -1,8 +1,9 @@
-from flask import Flask, render_template, request, make_response, redirect, url_for
+from flask import Flask, render_template, request, make_response, redirect, url_for, flash
 from database import DB
 from datetime import datetime
 
 app = Flask(__name__)
+app.secret_key = 'some secret'
 local_db = DB()
 
 
@@ -25,10 +26,9 @@ def fix_visit(login, passw, time_visit):
     sql = 'select * from Visits where user_id=? and datetime(dateFrom) between datetime(?) and datetime(?)'
     result = local_db.__execute__(sql, [id, datetime.strftime(datetime.now(), "%Y-%m-%d 00:00:00"), datetime.strftime(datetime.now(), "%Y-%m-%d 23:59:59")])
 
-    """
-    Если в результате ничего не найдено, тогда добавляем новую запись, 
-    иначе обновляем уже текущую запись
-    """
+    #Если в результате ничего не найдено, тогда добавляем новую запись, 
+    #иначе обновляем уже текущую запись
+    
     if result == []:
         sql = 'INSERT INTO Visits VALUES (?,?,?)'
         local_db.__execute__(sql, [id, time_visit, ""])
@@ -52,16 +52,6 @@ def get_nextId():
     id = int(result[0][0]) + 1
     return str(id)
 
-def get_fix_info(fix_status):
-    info = ''
-    if fix_status == 1:
-        info = "Ваш визит зафиксирован!"
-    elif fix_status == 2:
-        info = "Не удалось зафиксировать ваш визит!"
-    elif fix_status == 3:
-        info = "Неверный логин или пароль!"
-
-    return info
 
 @app.route('/send_mail/<type>')
 def send_mail(type=''):
@@ -71,33 +61,31 @@ def send_mail(type=''):
 @app.route('/<int:fix_visit>')
 def index(fix_visit=0):
     _username = "" if not request.cookies.get('username') else request.cookies.get('username')
-    info = get_fix_info(fix_visit)
     
-    return render_template('index.html', username=_username, login_info = info)
+    return render_template('index.html', username=_username)
 
 @app.route('/login', methods=['POST'])
 def login():
     """Авторизация или регистрация пользователя, сохранение cookie"""
-    info = None
+    error = None
     _username = request.form['login']
     _passw = request.form['password']
     curr_time = datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M:%S")
-    fix_success = 0
     if valid_login(_username, _passw):
         try:
             fix_visit(_username, _passw, curr_time)
-            fix_success = 1
         except:
-            info = 'Не удалось зафиксировать время. Попробуйте ещё раз!'
-            fix_success = 2
+            error = 'Не удалось зафиксировать время. Попробуйте ещё раз!'
+        else:
+            flash("Ваш визит зафиксирован!")    
+            resp = redirect(url_for('index'))
+            resp.set_cookie('username', _username, expires = datetime(2020, 12, 31))
+
+            return resp
     else:
-        fix_success = 3
-        info = "Неверный логин или пароль"
+        error = "Неверный логин или пароль"
 
-    resp = redirect(url_for('index', fix_visit=fix_success))
-    resp.set_cookie('username', _username, expires = datetime(2020, 12, 31))
-
-    return resp
+    return render_template('index.html', username=_username, login_info=error)    
 
 @app.route('/reg_form')
 def reg_form():

@@ -35,7 +35,17 @@
     </p>
 
     <p>{% if login_info %} {{ login_info }} {% endif %}</p>
-
+    <p>  
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <ul class=flashes>
+      {% for message in messages %}
+        <li>{{ message }}</li>
+      {% endfor %}
+      </ul>
+    {% endif %}
+    {% endwith %}
+    </p>
 
   </form>
 </body>
