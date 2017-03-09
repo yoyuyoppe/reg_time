@@ -23,14 +23,4 @@ class DB():
 
     def __del__(self):
         self.connector.close()
-
-
-"""_db = DB()
-
-for row in (_db.__execute__('select id, name from users where name = ? and password = ?', ["Администратор", "pkjqjlvby"])):
-    print(row[0])
-
-c = _db.__execute__('select * from users where name = ? and password = ?', ["Администратор", "pkjqjlvby"])
-print(c[0][0])
-
-_db = None"""  
+ 

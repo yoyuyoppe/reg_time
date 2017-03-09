@@ -30,7 +30,7 @@
     </p>
 
     <p class="forgot-password">
-      <a href="{{ url_for('send_mail', type = 'SEND_PASSWORD') }}">Забыли пароль?</a>
+      <a href="{{ url_for('send_mail') }}">Забыли пароль?</a>
       <a style=margin-left:20% href="{{ url_for('reg_form') }}">Регистрация</a>
     </p>
 
@@ -38,7 +38,7 @@
     <p>  
     {% with messages = get_flashed_messages() %}
     {% if messages %}
-      <ul class=flashes>
+      <ul>
       {% for message in messages %}
         <li>{{ message }}</li>
       {% endfor %}

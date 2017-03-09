@@ -53,8 +53,24 @@ def get_nextId():
     return str(id)
 
 
-@app.route('/send_mail/<type>')
+@app.route('/send_mail')
 def send_mail(type=''):
+    _username = request.form['login']
+    info = None
+    if _username:
+        try:
+            result = local_db.__execute__('select email from Users where name=?', [_username])
+            if result == []:
+                raise ''
+
+            e_mail = result[0][0]    
+            
+            info = "Письмо с новым паролем отправлено на почту %s" % e_mail
+
+        except:
+            info = 'Ошибка! Не удалось получить электронный адрес для пользователя %s' % _username
+
+    flash(info)
     return redirect(url_for('index'))
 
 @app.route('/')
