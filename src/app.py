@@ -60,11 +60,13 @@ def sendMail(recipient):
 
 @app.route('/sMail')
 @app.route('/sMail/<recipient>')
-def get_sendMailForm(recipient=''):
+def get_sendMailForm(recipient=False):
     if not recipient:
         return render_template('sMail_form.html')
     else:
-        sendMail(recipient)
+        try:
+            sendMail(recipient)
+        except
         return redirect('index')    
 
 @app.route('/')
