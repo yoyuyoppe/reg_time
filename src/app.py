@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, make_response, redirect, url_for, flash
 from database import DB
 from datetime import datetime
+from smtplib import SMTP
+from random import randrange
 
 app = Flask(__name__)
 app.secret_key = 'some secret'
@@ -52,26 +54,18 @@ def get_nextId():
     id = int(result[0][0]) + 1
     return str(id)
 
+def sendMail(recipient):
+    pass
 
-@app.route('/send_mail')
-def send_mail(type=''):
-    _username = request.form['login']
-    info = None
-    if _username:
-        try:
-            result = local_db.__execute__('select email from Users where name=?', [_username])
-            if result == []:
-                raise ''
 
-            e_mail = result[0][0]    
-            
-            info = "Письмо с новым паролем отправлено на почту %s" % e_mail
-
-        except:
-            info = 'Ошибка! Не удалось получить электронный адрес для пользователя %s' % _username
-
-    flash(info)
-    return redirect(url_for('index'))
+@app.route('/sMail')
+@app.route('/sMail/<recipient>')
+def get_sendMailForm(recipient=''):
+    if not recipient:
+        return render_template('sMail_form.html')
+    else:
+        sendMail(recipient)
+        return redirect('index')    
 
 @app.route('/')
 @app.route('/<int:fix_visit>')
