@@ -30,7 +30,7 @@
     </p>
 
     <p class="forgot-password">
-      <a href="{{ url_for('get_sendMailForm') }}">Забыли пароль?</a>
+      <a href="{{ url_for('get_sMailForm', name=username) }}">Забыли пароль?</a>
       <a style=margin-left:20% href="{{ url_for('reg_form') }}">Регистрация</a>
     </p>
 

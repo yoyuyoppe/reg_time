@@ -54,20 +54,47 @@ def get_nextId():
     id = int(result[0][0]) + 1
     return str(id)
 
-def sendMail(recipient):
-    pass
+@app.route('/sendMail', methods=['POST'])
+def sendMail():
+    from email.mime.multipart import MIMEMultipart
+    from email.mime.text import MIMEText
 
+    sender = 'it@soveren.ru'
+    recipient = request.form['e_mail']
+
+    rows = local_db.__execute__('select name, password from Users where email=?', [recipient.strip()])
+    if not rows == []: 
+        #Отправляем письмо с паролем
+        msg = MIMEMultipart()
+        msg['Subject']='Восстановление пароля'
+        msg['From']=sender
+        msg['To']=recipient
+
+        text = 'Ваш пароль:\n\t%s' %rows[0][1]
+        msg.attach(MIMEText(text, 'plain'))
+
+        smptObj = SMTP('gw-office', 25)
+        try:
+            smptObj.sendmail(sender, recipient, msg.as_string())
+            smptObj.quit()
+            flash('Письмо с вашим паролем успешно отправлено на указанный почтовый адрес %s' %recipient)
+        except:
+            flash('Произошёл сбой при отправке на почту %s' % email)
+    else:
+         flash('Почтовый адрес %s не зарегистрирован в системе!' % recipient)       
+
+    return redirect(url_for('index'))    
 
 @app.route('/sMail')
-@app.route('/sMail/<recipient>')
-def get_sendMailForm(recipient=False):
-    if not recipient:
-        return render_template('sMail_form.html')
+@app.route('/sMail/<name>')
+def get_sMailForm(name=''):
+    _username = name
+    rows = local_db.__execute__('select email from Users where name=?', [_username])
+    if not rows == []:
+        return render_template('sMail_form.html', e_mail=rows[0][0])
     else:
-        try:
-            sendMail(recipient)
-        except
-        return redirect('index')    
+        flash('Не удалось найти электронный адрес для указанного пользователя!')  
+        return redirect(url_for('index'))
 
 @app.route('/')
 @app.route('/<int:fix_visit>')

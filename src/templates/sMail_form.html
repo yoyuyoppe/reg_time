@@ -18,14 +18,14 @@
 
 <body>
 
-    <form method="post" action="{ {url_for('get_sendMailForm', recipient=True)} }" class="login">
+    <form method="post" action="/sendMail" class="login">
 
         <h1 style="text-decoration: underline">{{ login_info }}</h1>
         <br>
 
         <p>
             <label>E-mail:</label>
-            <input type="text" id="e_mail" name="e_mail" required>
+            <input type="text" id="e_mail" name="e_mail" value={{ e_mail }} required>
         </p>
 
         <br>
